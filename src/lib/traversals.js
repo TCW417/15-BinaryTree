@@ -1,31 +1,37 @@
+const PRE = 1;
+const IN = 2;
+const POST = 3;
 
 // Time complexity for all traversals: O(n) where n is the number of noes
+const traverse = (tree, order, callback) => {
+  if (!tree) return undefined;
+
+  if (order === PRE) callback(tree.value);
+
+  traverse(tree.left, order, callback);
+
+  if (order === IN) callback(tree.value);
+
+  traverse(tree.right, order, callback);
+  
+  if (order === POST) callback(tree.value);
+
+  return undefined;
+};
+
 const preOrderTraversal = (rootNode, callback) => {
   // pre-order: root, left, right
-  if (!rootNode) return undefined;
-  // at this point, I am in the root
-  callback(rootNode.value);
-  preOrderTraversal(rootNode.left, callback);
-  preOrderTraversal(rootNode.right, callback);
-  return undefined;
+  return traverse(rootNode, PRE, callback);
 };
 
 const postOrderTraversal = (rootNode, callback) => {
   // post-order: left, right, root;
-  if (!rootNode) return undefined;
-  postOrderTraversal(rootNode.left, callback);
-  postOrderTraversal(rootNode.right, callback);
-  callback(rootNode.value);
-  return undefined;
+  return traverse(rootNode, POST, callback);
 };
 
 const inOrderTraversal = (rootNode, callback) => {
   // in-order: left, root, right;
-  if (!rootNode) return undefined;
-  postOrderTraversal(rootNode.left, callback);
-  callback(rootNode.value);
-  postOrderTraversal(rootNode.right, callback);
-  return undefined;
+  return traverse(rootNode, IN, callback);
 };
 
 export { preOrderTraversal, inOrderTraversal, postOrderTraversal };
