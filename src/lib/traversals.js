@@ -34,4 +34,18 @@ const inOrderTraversal = (rootNode, callback) => {
   return traverse(rootNode, IN, callback);
 };
 
-export { preOrderTraversal, inOrderTraversal, postOrderTraversal };
+const iterativePreOrder = (rootNode, callback) => {
+  if (!rootNode) return undefined;
+
+  const stack = [rootNode];
+  
+  while (stack.length) {
+    const p = stack.pop();
+    callback(p.value);
+    
+    if (p.right !== null) stack.push(p.right);
+    if (p.left !== null) stack.push(p.left);
+  }
+};
+
+export { preOrderTraversal, iterativePreOrder, inOrderTraversal, postOrderTraversal };

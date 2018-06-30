@@ -44,24 +44,33 @@ Promise.all([Tree.remove(), TreeNode.remove()])
       { left: null, right: null },
     ];
 
+    const saves = [];
     for (let i = 0; i < edges.length; i++) {
-      nodes[i].children[0] = edges[i].left ? edges[i].left._id : null;
-      nodes[i].children[1] = edges[i].right ? edges[i].right._id : null;
+      nodes[i].left = edges[i].left; // ? edges[i].left._id : null;
+      nodes[i].right = edges[i].right; // ? edges[i].right._id : null;
+      saves.push(nodes[i].save());
     }
+    Promise.all(saves)
+      .then(() => {
+        // console.log('the nodes >>>>>>>>>>>>>>');
+        // console.log(nodes);
 
-    console.log('the nodes >>>>>>>>>>>>>>');
-    console.log(nodes);
-
-    const tree = new Tree({ 
-      name: 'Lab-15',
-      root: nodes[0]._id,
-    });
-    tree.save()
+        const tree = new Tree({ 
+          name: 'Lab-15',
+          root: nodes[0]._id,
+        });
+        return tree.save();
+      })
       .then((theTree) => {
-        console.log('the root >>>>>>>>>>>>>>');
-        console.log(theTree);
+        // console.log('the root >>>>>>>>>>>>>>');
+        // console.log(JSON.stringify(theTree));
         return theTree;
       });
+    // nodes[0].left = edges[0].left;
+    // nodes[0].right = edges[0].right;
+    // console.log('>>>>>>>> node after edge assignments', nodes[0]);
+    // nodes[0].save()
+    //   .then(node => console.log('******* node', node));
   })
   .catch((err) => {
     throw err;
