@@ -2,4 +2,7 @@ language: node_js
 node_js:
   - "node"
 services:
-    - mongodb
+  - mongodb
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
