@@ -1,5 +1,6 @@
 'use strict';
 
+import logger from './lib/logger';
 import { startServer } from './lib/server';
 import TreeNode from './model/treenode';
 import Tree from './model/tree';
@@ -10,6 +11,7 @@ const nodePromises = [];
 // empty Trees database
 Promise.all([Tree.remove(), TreeNode.remove()])
   .then(() => {
+    logger.log(logger.INFO, 'MAIN: Tree and TreeNodes removed from DB');
     // save tree nodes to database
     for (let i = 1; i <= 9; i++) {
       const p = new Promise((resolve, reject) => {
@@ -26,6 +28,7 @@ Promise.all([Tree.remove(), TreeNode.remove()])
     return Promise.all(nodePromises);
   })
   .then((result) => {
+    logger.log(logger.INFO, 'MAIN: new TreeNodes saved, building tree.');
     nodes = result;
 
     const [one, two, three, four, five, six, seven, eight, nine] = nodes; /* eslint-disable-line */
@@ -52,6 +55,7 @@ Promise.all([Tree.remove(), TreeNode.remove()])
     }
     Promise.all(saves)
       .then(() => {
+        logger.log(logger.INFO, 'MAIN: Tree nodes linked and saved.');
         const tree = new Tree({ 
           name: 'Lab-15',
           root: nodes[0]._id,
@@ -59,6 +63,7 @@ Promise.all([Tree.remove(), TreeNode.remove()])
         return tree.save();
       })
       .then((theTree) => {
+        logger.log(logger.INFO, 'MAIN: Tree root Lab-15 saved');
         return theTree;
       });
   })
