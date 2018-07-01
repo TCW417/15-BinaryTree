@@ -4,6 +4,7 @@
 
 This lab implements a simple binary tree data structure and methods for doing pre-, in-, and post-order traversals.  See ./src/__test__/binary-tree.js for examples.
 
+
 ### INSTALLATION
 
   - Assuming you have git, node.js and npm installed, clone https://github.com/TCW417/15-BinaryTree.git into a directory of your choice.  (If you don't have git, node.js and npm installed, please google instructions on how to install these tools.) 
