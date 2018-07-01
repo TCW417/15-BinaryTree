@@ -9,8 +9,8 @@ const nodePromises = [];
 
 // empty Trees database
 Promise.all([Tree.remove(), TreeNode.remove()])
-  .then(() => {
-    console.log('MAIN: Tree and TreeNodes removed from DB');
+  .then((results) => {
+    console.log('MAIN: Tree and TreeNodes removed from DB. results:', results);
     // save tree nodes to database
     for (let i = 1; i <= 9; i++) {
       const p = new Promise((resolve, reject) => {
