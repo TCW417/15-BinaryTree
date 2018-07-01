@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import logger from './logger';
-import modelRouter from '../router/model-router';
+import treeRouter from '../router/tree-router';
 
 // middleware
 import errorMiddleWare from '../lib/middleware/error-middleware';
@@ -20,7 +20,7 @@ app.use(express.json());
 // our own modules
 app.use(loggerMiddleware);
 
-app.use(modelRouter);
+app.use(treeRouter);
 
 app.use(errorMiddleWare);
 

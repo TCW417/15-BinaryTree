@@ -46,15 +46,12 @@ Promise.all([Tree.remove(), TreeNode.remove()])
 
     const saves = [];
     for (let i = 0; i < edges.length; i++) {
-      nodes[i].left = edges[i].left; // ? edges[i].left._id : null;
-      nodes[i].right = edges[i].right; // ? edges[i].right._id : null;
+      nodes[i].left = edges[i].left; 
+      nodes[i].right = edges[i].right; 
       saves.push(nodes[i].save());
     }
     Promise.all(saves)
       .then(() => {
-        // console.log('the nodes >>>>>>>>>>>>>>');
-        // console.log(nodes);
-
         const tree = new Tree({ 
           name: 'Lab-15',
           root: nodes[0]._id,
@@ -62,15 +59,8 @@ Promise.all([Tree.remove(), TreeNode.remove()])
         return tree.save();
       })
       .then((theTree) => {
-        // console.log('the root >>>>>>>>>>>>>>');
-        // console.log(JSON.stringify(theTree));
         return theTree;
       });
-    // nodes[0].left = edges[0].left;
-    // nodes[0].right = edges[0].right;
-    // console.log('>>>>>>>> node after edge assignments', nodes[0]);
-    // nodes[0].save()
-    //   .then(node => console.log('******* node', node));
   })
   .catch((err) => {
     throw err;
