@@ -95,13 +95,19 @@ treeRouter.get('/api/tree/:name/:method?', (request, response, next) => {
     })
     .then((foundTree) => {
       logger.log(logger.INFO, `TREE-ROUTER: FOUND TREE ${JSON.stringify(foundTree)}`);
+
+      if (!foundTree) return next(new HttpErrors(404, `Tree ${request.params.name} not found`));
+
       traverseTree(request.params.name, foundTree.root, request.params.method)
         .then((result) => {         
           response.status(200).json(result);
         })
         .catch(next);
+      return undefined;
     })
-    .catch(next);
+    .catch((err) => {
+      next(err);
+    });
   return undefined;
 });
 

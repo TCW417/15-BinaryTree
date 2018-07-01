@@ -26,7 +26,7 @@ app.use(errorMiddleWare);
 
 // catch all
 app.all('*', (request, response) => {
-  console.log('Returning a 404 from the catch/all route');
+  logger.log(logger.ERROR, 'Server returning a 404 from the catch/all route');
   return response.sendStatus(404).send('Route Not Registered');
 });
 
@@ -35,7 +35,7 @@ const startServer = () => {
   return mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
       server = app.listen(PORT, () => {
-        console.log('Server up:', PORT);
+        logger.log(logger.INFO, `Server up on port ${PORT}`);
       });
     })
     .catch((err) => {
@@ -47,7 +47,7 @@ const stopServer = () => {
   return mongoose.disconnect()
     .then(() => {
       server.close(() => {
-        logger.log(logger.INFO, 'Server is off');
+        logger.log(logger.INFO, 'Server stopped');
       });
     })
     .catch((err) => {

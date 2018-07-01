@@ -40,12 +40,13 @@ const iterativePreOrder = (rootNode, callback) => {
   const stack = [rootNode];
   
   while (stack.length) {
-    const p = stack.pop();
-    callback(p.value);
+    const node = stack.pop();
+    callback(node.value);
     
-    if (p.right !== null) stack.push(p.right);
-    if (p.left !== null) stack.push(p.left);
+    if (node.right !== null) stack.push(node.right);
+    if (node.left !== null) stack.push(node.left);
   }
+  return undefined;
 };
 
 export { preOrderTraversal, iterativePreOrder, inOrderTraversal, postOrderTraversal };
