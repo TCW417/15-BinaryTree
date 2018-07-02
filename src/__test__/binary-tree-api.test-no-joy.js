@@ -1,26 +1,23 @@
 'use strict';
 
 import superagent from 'superagent';
-// import binaryTree from '../model/binary-tree';
-// import { preOrderTraversal, iterativePreOrder, inOrderTraversal, postOrderTraversal } from '../lib/traversals';
-// import init from '../main';
 
 import { startServer, stopServer } from '../lib/server';
 
-const apiUrl = `http://localhost:${process.env.PORT}/api/Tree`;
+const apiUrl = `http://localhost:${process.env.PORT}/api/tree`;
 
 const lab15Json = '{"name":"Lab-15","root":{"value":1,"left":{"value":2,"left":{"value":6,"left":null,"right":{"value":7,"left":{"value":8,"left":null,"right":null},"right":{"value":9,"left":null,"right":null}}},"right":null},"right":{"value":3,"left":{"value":4,"left":null,"right":null},"right":{"value":5,"left":null,"right":null}}}}';
 
-// beforeAll(() => {
-//   console.log('API TEST calling startServer from beforeAll');
-//   startServer();
-// });
-beforeAll(startServer);
+beforeAll(() => {
+  console.log('API TEST calling startServer from beforeAll');
+  startServer();
+});
+// beforeAll(startServer);
 afterAll(stopServer);
 
 describe('API Server tests', () => {
   test('GET /api/tree expect list of trees (just "Lab-15")', () => {
-    return superagent(apiUrl)
+    return superagent.get(apiUrl)
       .then((result) => {
         expect(result.body).toHaveLength(1);
         expect(result.body[0]).toEqual('Lab-15');

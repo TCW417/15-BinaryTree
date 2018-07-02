@@ -1,18 +1,22 @@
 'use strict';
 
+
 import { startServer } from './lib/server';
 import TreeNode from './model/treenode';
 import Tree from './model/tree';
 
 let nodes;
 const nodePromises = [];
+
 console.log('MAIN: TOP OF FILE');
+console.log('MAIN: typeof startServer', typeof startServer);
+
 // empty Trees database
-export default () => {
+const init = () => {
   return new Promise((resolve, reject) => {
     Promise.all([Tree.remove(), TreeNode.remove()])
       .then((results) => {
-        console.log('MAIN: Tree and TreeNodes removed from DB. results:', results);
+        console.log('MAIN init: Tree and TreeNodes removed from DB. results:', results);
         // save tree nodes to database
         for (let i = 1; i <= 9; i++) {
           const p = new Promise((resolve1, reject1) => {
@@ -29,7 +33,7 @@ export default () => {
         return Promise.all(nodePromises);
       })
       .then((result) => {
-        console.log('MAIN: new TreeNodes saved, building tree.');
+        console.log('MAIN init: new TreeNodes saved, building tree.');
         nodes = result;
 
       const [one, two, three, four, five, six, seven, eight, nine] = nodes; /* eslint-disable-line */
@@ -56,7 +60,7 @@ export default () => {
         }
         Promise.all(saves)
           .then(() => {
-            console.log('MAIN: Tree nodes linked and saved.');
+            console.log('MAIN init: Tree nodes linked and saved.');
             const tree = new Tree({ 
               name: 'Lab-15',
               root: nodes[0]._id,
@@ -64,7 +68,7 @@ export default () => {
             return tree.save();
           })
           .then((theTree) => {
-            console.log('MAIN: Tree root Lab-15 saved');
+            console.log('MAIN init: Tree root Lab-15 saved');
             return resolve(theTree);
           });
       })
@@ -74,6 +78,14 @@ export default () => {
   });
 };
 
-console.log('MAIN: calling startServer');
+// console.log('MAIN: calling init()');
 
-startServer();
+// init()
+//   .then((result) => {
+//     console.log('MAIN: calling startServer, result from init', result);
+//     startServer();
+//   })
+//   .catch(console.error);
+export default init;
+// console.log('MAIN: calling startServer');
+// startServer();

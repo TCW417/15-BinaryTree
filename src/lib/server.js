@@ -40,9 +40,11 @@ const startServer = () => {
       return init();
     })
     .then(() => {
+      // console.log('STARTSERVER: calling app.listen');
       server = app.listen(PORT, () => {
         logger.log(logger.INFO, `Server up on port ${PORT}`);
       });
+      console.log('SERVER: after app.listen call, typeof server', typeof server);
     })
     .catch((err) => {
       throw err;
@@ -60,5 +62,7 @@ const stopServer = () => {
       throw err;
     });
 };
-
 export { startServer, stopServer };
+
+console.log('SERVER: typeof startServer', typeof startServer);
+
