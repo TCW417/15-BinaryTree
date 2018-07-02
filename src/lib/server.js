@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import logger from './logger';
 import treeRouter from '../router/tree-router';
+import init from '../main';
 
 // middleware
 import errorMiddleWare from '../lib/middleware/error-middleware';
@@ -30,9 +31,14 @@ app.all('*', (request, response) => {
   return response.sendStatus(404).send('Route Not Registered');
 });
 
-
+console.log('SERVER: before declaration of startServer');
 const startServer = () => {
+  console.log('STARTSERVER connecting to mongoose');
   return mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+      console.log('STARTSERVER: calling init()');
+      return init();
+    })
     .then(() => {
       server = app.listen(PORT, () => {
         logger.log(logger.INFO, `Server up on port ${PORT}`);

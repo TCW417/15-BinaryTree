@@ -6,68 +6,74 @@ import Tree from './model/tree';
 
 let nodes;
 const nodePromises = [];
-
+console.log('MAIN: TOP OF FILE');
 // empty Trees database
-Promise.all([Tree.remove(), TreeNode.remove()])
-  .then((results) => {
-    console.log('MAIN: Tree and TreeNodes removed from DB. results:', results);
-    // save tree nodes to database
-    for (let i = 1; i <= 9; i++) {
-      const p = new Promise((resolve, reject) => {
-        new TreeNode({ value: i }).save()
-          .then((result) => {
-            return resolve(result);
-          })
-          .catch(reject);
-      });
-      nodePromises.push(p);
-    }
-    // wait for all saves to complete. result
-    // will be an array of saved nodes.
-    return Promise.all(nodePromises);
-  })
-  .then((result) => {
-    console.log('MAIN: new TreeNodes saved, building tree.');
-    nodes = result;
-
-    const [one, two, three, four, five, six, seven, eight, nine] = nodes; /* eslint-disable-line */
-
-    // this array of edges maps to Judy's lab-15
-    // tree.  edges[i] == node[i+1]'s child links.
-    const edges = [
-      { left: two, right: three },
-      { left: six, right: null },
-      { left: four, right: five },
-      { left: null, right: null },
-      { left: null, right: null },
-      { left: null, right: seven },
-      { left: eight, right: nine },
-      { left: null, right: null },
-      { left: null, right: null },
-    ];
-
-    const saves = [];
-    for (let i = 0; i < edges.length; i++) {
-      nodes[i].left = edges[i].left; 
-      nodes[i].right = edges[i].right; 
-      saves.push(nodes[i].save());
-    }
-    Promise.all(saves)
-      .then(() => {
-        console.log('MAIN: Tree nodes linked and saved.');
-        const tree = new Tree({ 
-          name: 'Lab-15',
-          root: nodes[0]._id,
-        });
-        return tree.save();
+export default () => {
+  return new Promise((resolve, reject) => {
+    Promise.all([Tree.remove(), TreeNode.remove()])
+      .then((results) => {
+        console.log('MAIN: Tree and TreeNodes removed from DB. results:', results);
+        // save tree nodes to database
+        for (let i = 1; i <= 9; i++) {
+          const p = new Promise((resolve1, reject1) => {
+            new TreeNode({ value: i }).save()
+              .then((result) => {
+                return resolve1(result);
+              })
+              .catch(reject1);
+          });
+          nodePromises.push(p);
+        }
+        // wait for all saves to complete. result
+        // will be an array of saved nodes.
+        return Promise.all(nodePromises);
       })
-      .then((theTree) => {
-        console.log('MAIN: Tree root Lab-15 saved');
-        return theTree;
+      .then((result) => {
+        console.log('MAIN: new TreeNodes saved, building tree.');
+        nodes = result;
+
+      const [one, two, three, four, five, six, seven, eight, nine] = nodes; /* eslint-disable-line */
+
+        // this array of edges maps to Judy's lab-15
+        // tree.  edges[i] == node[i+1]'s child links.
+        const edges = [
+          { left: two, right: three },
+          { left: six, right: null },
+          { left: four, right: five },
+          { left: null, right: null },
+          { left: null, right: null },
+          { left: null, right: seven },
+          { left: eight, right: nine },
+          { left: null, right: null },
+          { left: null, right: null },
+        ];
+
+        const saves = [];
+        for (let i = 0; i < edges.length; i++) {
+          nodes[i].left = edges[i].left; 
+          nodes[i].right = edges[i].right; 
+          saves.push(nodes[i].save());
+        }
+        Promise.all(saves)
+          .then(() => {
+            console.log('MAIN: Tree nodes linked and saved.');
+            const tree = new Tree({ 
+              name: 'Lab-15',
+              root: nodes[0]._id,
+            });
+            return tree.save();
+          })
+          .then((theTree) => {
+            console.log('MAIN: Tree root Lab-15 saved');
+            return resolve(theTree);
+          });
+      })
+      .catch((err) => {
+        return reject(err);
       });
-  })
-  .catch((err) => {
-    throw err;
   });
+};
+
+console.log('MAIN: calling startServer');
 
 startServer();
