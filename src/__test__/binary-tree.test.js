@@ -1,14 +1,27 @@
 'use strict';
 
 import binaryTree from '../model/binary-tree';
-import { preOrderTraversal, inOrderTraversal, postOrderTraversal } from '../lib/traversals';
+import { preOrderTraversal, iterativePreOrder, inOrderTraversal, postOrderTraversal } from '../lib/traversals';
 
 describe('PRE-ORDER', () => {
+  describe('Library test', () => {
+    test('Expecting a string of visited nodes as 1 2 6 7 8 9 3 4 5', () => {
+      // remember that I made my traversal signatures accept a callback so I can apply any kind of logic to each visited node in the test environment
+      let str = '';
+      preOrderTraversal(binaryTree.root, (nodeValue) => {
+        str += `${nodeValue} `;
+      });
+      expect(str.trim()).toEqual('1 2 6 7 8 9 3 4 5');
+    });
+  });
+});
+
+describe('ITERATIVE PRE-ORDER', () => {
   test('Expecting a string of visited nodes as 1 2 6 7 8 9 3 4 5', () => {
     // remember that I made my traversal signatures accept a callback so I can apply any kind of logic to each visited node in the test environment
 
     let str = '';
-    preOrderTraversal(binaryTree.root, (nodeValue) => {
+    iterativePreOrder(binaryTree.root, (nodeValue) => {
       str += `${nodeValue} `;
     });
     expect(str.trim()).toEqual('1 2 6 7 8 9 3 4 5');
@@ -28,13 +41,13 @@ describe('POST-ORDER', () => {
 });
 
 describe('IN-ORDER', () => {
-  test('Expecting a string of visited nodes as 8 9 7 6 2 1 4 5 3', () => {
+  test('Expecting a string of visited nodes as 6 8 7 9 2 1 4 3 5', () => {
     // remember that I made my traversal signatures accept a callback so I can apply any kind of logic to each visited node in the test environment
 
     let str = '';
     inOrderTraversal(binaryTree.root, (nodeValue) => {
       str += `${nodeValue} `;
     });
-    expect(str.trim()).toEqual('8 9 7 6 2 1 4 5 3');
+    expect(str.trim()).toEqual('6 8 7 9 2 1 4 3 5');
   });
 });
